@@ -35,11 +35,11 @@ const useToast = () => {
     toastService.addToast(id, "pending", text.pending);
 
     promise()
-      .then((result) => {
+      .then((result: any) => {
         toastService.updateToast(id, "success", text.success);
         return result;
       })
-      .catch((error) => {
+      .catch((error: any) => {
         toastService.updateToast(id, "error", text.error);
         throw error;
       });

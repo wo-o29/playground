@@ -36,14 +36,19 @@ function Toast({ limit = 3, autoClose = 3000 }: ToastProps) {
 
       // 메시지를 일정 시간 후에 제거
       setTimeout(() => {
-        setMessages((prev) => prev.slice(1));
+        setMessages((prev) => prev.filter((toast) => toast.id !== id));
       }, autoClose);
     };
 
     const handleUpdateToast = ({ id, type, message }: ToastArrayType) => {
       setMessages((prev) => {
-        console.log(prev);
-        return prev;
+        const updatedMessages = prev.map((toast) => {
+          if (toast.id === id) {
+            return { ...toast, type, message };
+          }
+          return toast;
+        });
+        return updatedMessages;
       });
 
       if (type === "pending") {
@@ -51,7 +56,7 @@ function Toast({ limit = 3, autoClose = 3000 }: ToastProps) {
       }
 
       setTimeout(() => {
-        setMessages((prev) => prev.slice(1));
+        setMessages((prev) => prev.filter((toast) => toast.id !== id));
       }, autoClose);
     };
 

@@ -1,39 +1,32 @@
 import { useState } from "react";
 import useToast from "@/hooks/useToast";
 
-const key = "Nje0yEa8C31DXnWv9s72ejSQ1becaiLf6Hz8dTpYJQMD4cP27agyK2V6%2B2dduwneC2RC0%2FOJgmJoyKSNroiwwQ%3D%3D";
-
 const api = async () => {
-  try {
-    const response = await fetch(
-      "http://apis.data.go.kr/B551177/StatusOfPassengerWorldWeatherInfo/getPassengerArrivalsWorldWeather?serviceKey=Nje0yEa8C31DXnWv9s72ejSQ1becaiLf6Hz8dTpYJQMD4cP27agyK2V6%2B2dduwneC2RC0%2FOJgmJoyKSNroiwwQ%3D%3D&numOfRows=10000000&pageNo=1&from_time=0000&to_time=2400&lang=K&type=json"
-    );
-    await fetch(
-      "http://apis.data.go.kr/B551177/StatusOfPassengerWorldWeatherInfo/getPassengerArrivalsWorldWeather?serviceKey=Nje0yEa8C31DXnWv9s72ejSQ1becaiLf6Hz8dTpYJQMD4cP27agyK2V6%2B2dduwneC2RC0%2FOJgmJoyKSNroiwwQ%3D%3D&numOfRows=10000000&pageNo=1&from_time=0000&to_time=2400&lang=K&type=json"
-    );
-    await fetch(
-      "http://apis.data.go.kr/B551177/StatusOfPassengerWorldWeatherInfo/getPassengerArrivalsWorldWeather?serviceKey=Nje0yEa8C31DXnWv9s72ejSQ1becaiLf6Hz8dTpYJQMD4cP27agyK2V6%2B2dduwneC2RC0%2FOJgmJoyKSNroiwwQ%3D%3D&numOfRows=10000000&pageNo=1&from_time=0000&to_time=2400&lang=K&type=json"
-    );
-    await fetch(
-      "http://apis.data.go.kr/B551177/StatusOfPassengerWorldWeatherInfo/getPassengerArrivalsWorldWeather?serviceKey=Nje0yEa8C31DXnWv9s72ejSQ1becaiLf6Hz8dTpYJQMD4cP27agyK2V6%2B2dduwneC2RC0%2FOJgmJoyKSNroiwwQ%3D%3D&numOfRows=10000000&pageNo=1&from_time=0000&to_time=2400&lang=K&type=json"
-    );
-    await fetch(
-      "http://apis.data.go.kr/B551177/StatusOfPassengerWorldWeatherInfo/getPassengerArrivalsWorldWeather?serviceKey=Nje0yEa8C31DXnWv9s72ejSQ1becaiLf6Hz8dTpYJQMD4cP27agyK2V6%2B2dduwneC2RC0%2FOJgmJoyKSNroiwwQ%3D%3D&numOfRows=10000000&pageNo=1&from_time=0000&to_time=2400&lang=K&type=json"
-    );
-    await fetch(
-      "http://apis.data.go.kr/B551177/StatusOfPassengerWorldWeatherInfo/getPassengerArrivalsWorldWeather?serviceKey=Nje0yEa8C31DXnWv9s72ejSQ1becaiLf6Hz8dTpYJQMD4cP27agyK2V6%2B2dduwneC2RC0%2FOJgmJoyKSNroiwwQ%3D%3D&numOfRows=10000000&pageNo=1&from_time=0000&to_time=2400&lang=K&type=json"
-    );
-    await fetch(
-      "http://apis.data.go.kr/B551177/StatusOfPassengerWorldWeatherInfo/getPassengerArrivalsWorldWeather?serviceKey=Nje0yEa8C31DXnWv9s72ejSQ1becaiLf6Hz8dTpYJQMD4cP27agyK2V6%2B2dduwneC2RC0%2FOJgmJoyKSNroiwwQ%3D%3D&numOfRows=10000000&pageNo=1&from_time=0000&to_time=2400&lang=K&type=json"
-    );
+  const response = await fetch(
+    "http://apis.data.go.kr/B551177/StatusOfPassengerWorldWeatherInfo/getPassengerArrivalsWorldWeather?serviceKey=Nje0yEa8C31DXnWv9s72ejSQ1becaiLf6Hz8dTpYJQMD4cP27agyK2V6%2B2dduwneC2RC0%2FOJgmJoyKSNroiwwQ%3D%3D&numOfRows=10000000&pageNo=1&from_time=0000&to_time=2400&lang=K&type=json"
+  );
+  await fetch(
+    "http://apis.data.go.kr/B551177/StatusOfPassengerWorldWeatherInfo/getPassengerArrivalsWorldWeather?serviceKey=Nje0yEa8C31DXnWv9s72ejSQ1becaiLf6Hz8dTpYJQMD4cP27agyK2V6%2B2dduwneC2RC0%2FOJgmJoyKSNroiwwQ%3D%3D&numOfRows=10000000&pageNo=1&from_time=0000&to_time=2400&lang=K&type=json"
+  );
+  await fetch(
+    "http://apis.data.go.kr/B551177/StatusOfPassengerWorldWeatherInfo/getPassengerArrivalsWorldWeather?serviceKey=Nje0yEa8C31DXnWv9s72ejSQ1becaiLf6Hz8dTpYJQMD4cP27agyK2V6%2B2dduwneC2RC0%2FOJgmJoyKSNroiwwQ%3D%3D&numOfRows=10000000&pageNo=1&from_time=0000&to_time=2400&lang=K&type=json"
+  );
+  await fetch(
+    "http://apis.data.go.kr/B551177/StatusOfPassengerWorldWeatherInfo/getPassengerArrivalsWorldWeather?serviceKey=Nje0yEa8C31DXnWv9s72ejSQ1becaiLf6Hz8dTpYJQMD4cP27agyK2V6%2B2dduwneC2RC0%2FOJgmJoyKSNroiwwQ%3D%3D&numOfRows=10000000&pageNo=1&from_time=0000&to_time=2400&lang=K&type=json"
+  );
+  await fetch(
+    "http://apis.data.go.kr/B551177/StatusOfPassengerWorldWeatherInfo/getPassengerArrivalsWorldWeather?serviceKey=Nje0yEa8C31DXnWv9s72ejSQ1becaiLf6Hz8dTpYJQMD4cP27agyK2V6%2B2dduwneC2RC0%2FOJgmJoyKSNroiwwQ%3D%3D&numOfRows=10000000&pageNo=1&from_time=0000&to_time=2400&lang=K&type=json"
+  );
+  await fetch(
+    "http://apis.data.go.kr/B551177/StatusOfPassengerWorldWeatherInfo/getPassengerArrivalsWorldWeather?serviceKey=Nje0yEa8C31DXnWv9s72ejSQ1becaiLf6Hz8dTpYJQMD4cP27agyK2V6%2B2dduwneC2RC0%2FOJgmJoyKSNroiwwQ%3D%3D&numOfRows=10000000&pageNo=1&from_time=0000&to_time=2400&lang=K&type=json"
+  );
+  await fetch(
+    "http://apis.data.go.kr/B551177/StatusOfPassengerWorldWeatherInfo/getPassengerArrivalsWorldWeather?serviceKey=Nje0yEa8C31DXnWv9s72ejSQ1becaiLf6Hz8dTpYJQMD4cP27agyK2V6%2B2dduwneC2RC0%2FOJgmJoyKSNroiwwQ%3D%3D&numOfRows=10000000&pageNo=1&from_time=0000&to_time=2400&lang=K&type=json"
+  );
 
-    // throw new Error("Failed to load data.");
-
-    const data = await response.json();
-    console.log("Response data:", data);
-  } catch (error) {
-    console.error("Error:", error);
-  }
+  // throw new Error("Failed to load data.");
+  const data = await response.json();
+  return data;
 };
 
 export default function Home() {

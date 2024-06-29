@@ -1,12 +1,7 @@
 import ErrorFallback from "@/components/Fallback";
 import Test from "@/components/Test";
 import { useStore } from "@/store/testStore";
-import {
-  QueryClient,
-  dehydrate,
-  useQuery,
-  useQueryErrorResetBoundary,
-} from "@tanstack/react-query";
+import { QueryClient, dehydrate, useQueries, useQuery, useQueryErrorResetBoundary } from "@tanstack/react-query";
 
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -17,9 +12,9 @@ export interface UserInfoType {
   completed: boolean;
 }
 
-const fetchTodo = async (): Promise<UserInfoType> => {
+const fetchTodo = async (id: number = 1): Promise<UserInfoType> => {
   try {
-    const res = await fetch(`https://jsonplaceholder.typicode.com/todos/1`);
+    const res = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`);
     if (!res.ok) {
       throw new Error(res.status.toString());
     }
@@ -35,7 +30,7 @@ export const getServerSideProps = async () => {
 
   await queryClient.prefetchQuery({
     queryKey: ["todos", "1"],
-    queryFn: fetchTodo,
+    queryFn: () => fetchTodo(1),
   });
 
   return {
@@ -44,20 +39,28 @@ export const getServerSideProps = async () => {
 };
 
 export default function Home() {
-  const { data } = useQuery({
-    queryKey: ["todos", "1"],
-    queryFn: fetchTodo,
-    refetchInterval: 30000,
-    refetchIntervalInBackground: true,
+  const ids = [1, 2, 3];
+  const combinedQueries = useQueries({
+    queries: ids.map((id) => ({
+      queryKey: ["post", id],
+      queryFn: () => fetchTodo(id),
+    })),
+    combine: (results) => {
+      return {
+        data: results.map((result) => result.data),
+        pending: results.some((result) => result.isPending),
+      };
+    },
   });
+  console.log(combinedQueries);
   const { reset } = useQueryErrorResetBoundary();
 
   return (
     <>
-      <div>{`유저 ID: ${data?.userId}`}</div>
+      {/* <div>{`유저 ID: ${data?.userId}`}</div>
       <div>{`ID: ${data?.id}`}</div>
       <div>{`제목: ${data?.title}`}</div>
-      <div>{`상태: ${data?.completed}`}</div>
+      <div>{`상태: ${data?.completed}`}</div> */}
       <hr />
       <hr />
       {/* <Suspense fallback={<div>로딩중입니다.....</div>}> */}
@@ -70,7 +73,7 @@ export default function Home() {
           />
         )}
       > */}
-        <Test />
+        {/* <Test /> */}
       </ErrorBoundary>
       {/* </Suspense> */}
     </>

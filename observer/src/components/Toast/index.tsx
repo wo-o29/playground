@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { ToastArrayType, ToastService } from "./ToastService";
 import ToastMessage from "./ToastMessage";
 import styles from "./Toast.module.css";
@@ -20,14 +20,13 @@ interface ToastProps {
 
 function Toast({ limit = 3, autoClose = 3000 }: ToastProps) {
   const [messages, setMessages] = useState<IndividualToastType[]>([]);
-  const id = useRef(0);
 
   useEffect(() => {
-    if (messages.length > limit) {
-      return;
-    }
-
     const handleNewMessage = ({ id, type, message }: ToastArrayType) => {
+      if (messages.length >= limit) {
+        return;
+      }
+
       setMessages((prev) => [...prev, { id, type, message }]);
 
       if (type === "pending") {

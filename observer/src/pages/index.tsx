@@ -1,17 +1,7 @@
-import { useState } from "react";
 import useToast from "@/hooks/useToast";
 
 const api = async () => {
   const response = await fetch(
-    "http://apis.data.go.kr/B551177/StatusOfPassengerWorldWeatherInfo/getPassengerArrivalsWorldWeather?serviceKey=Nje0yEa8C31DXnWv9s72ejSQ1becaiLf6Hz8dTpYJQMD4cP27agyK2V6%2B2dduwneC2RC0%2FOJgmJoyKSNroiwwQ%3D%3D&numOfRows=10000000&pageNo=1&from_time=0000&to_time=2400&lang=K&type=json"
-  );
-  await fetch(
-    "http://apis.data.go.kr/B551177/StatusOfPassengerWorldWeatherInfo/getPassengerArrivalsWorldWeather?serviceKey=Nje0yEa8C31DXnWv9s72ejSQ1becaiLf6Hz8dTpYJQMD4cP27agyK2V6%2B2dduwneC2RC0%2FOJgmJoyKSNroiwwQ%3D%3D&numOfRows=10000000&pageNo=1&from_time=0000&to_time=2400&lang=K&type=json"
-  );
-  await fetch(
-    "http://apis.data.go.kr/B551177/StatusOfPassengerWorldWeatherInfo/getPassengerArrivalsWorldWeather?serviceKey=Nje0yEa8C31DXnWv9s72ejSQ1becaiLf6Hz8dTpYJQMD4cP27agyK2V6%2B2dduwneC2RC0%2FOJgmJoyKSNroiwwQ%3D%3D&numOfRows=10000000&pageNo=1&from_time=0000&to_time=2400&lang=K&type=json"
-  );
-  await fetch(
     "http://apis.data.go.kr/B551177/StatusOfPassengerWorldWeatherInfo/getPassengerArrivalsWorldWeather?serviceKey=Nje0yEa8C31DXnWv9s72ejSQ1becaiLf6Hz8dTpYJQMD4cP27agyK2V6%2B2dduwneC2RC0%2FOJgmJoyKSNroiwwQ%3D%3D&numOfRows=10000000&pageNo=1&from_time=0000&to_time=2400&lang=K&type=json"
   );
   await fetch(
@@ -30,16 +20,15 @@ const api = async () => {
 };
 
 export default function Home() {
-  const [id, setId] = useState(1);
   const { pendingToast, successToast, errorToast, infoToast, warningToast } = useToast();
 
   const handleToastButtonClick = async () => {
-    setId((prev) => prev + 1);
-    pendingToast(api, {
+    const response = await pendingToast(api, {
       pending: "Loading data...",
       success: "Data fetched successfully 👌",
       error: "Failed to fetch data 🤯",
     });
+    console.log(response);
   };
 
   return (

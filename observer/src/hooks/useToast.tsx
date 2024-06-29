@@ -1,5 +1,5 @@
 import { ToastService } from "@/components/Toast/ToastService";
-import { getToastId } from "@/utils/getToastId";
+import { useRef } from "react";
 
 export interface PendingToastTextType {
   pending: string;
@@ -9,34 +9,36 @@ export interface PendingToastTextType {
 
 const useToast = () => {
   const toastService = ToastService.getInstance();
+  const toastId = useRef(0);
 
   const successToast = (message: string) => {
-    const id = getToastId();
+    const id = String(toastId.current++);
     toastService.addToast(id, "success", message);
   };
 
   const errorToast = (message: string) => {
-    const id = getToastId();
+    const id = String(toastId.current++);
     toastService.addToast(id, "error", message);
   };
 
   const warningToast = (message: string) => {
-    const id = getToastId();
+    const id = String(toastId.current++);
     toastService.addToast(id, "warning", message);
   };
 
   const infoToast = (message: string) => {
-    const id = getToastId();
+    const id = String(toastId.current++);
     toastService.addToast(id, "info", message);
   };
 
   const pendingToast = (promise: any, text: PendingToastTextType) => {
-    const id = getToastId();
+    const id = String(toastId.current++);
     toastService.addToast(id, "pending", text.pending);
 
-    promise()
+    return promise()
       .then((result: any) => {
         toastService.updateToast(id, "success", text.success);
+        console.log(id);
         return result;
       })
       .catch((error: any) => {

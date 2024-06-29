@@ -10,6 +10,7 @@ export interface PendingToastTextType {
 const useToast = () => {
   const toastService = ToastService.getInstance();
   const toastId = useRef(0);
+  const isPendingLoading = useRef(false);
 
   const successToast = (message: string) => {
     const id = String(toastId.current++);
@@ -32,8 +33,16 @@ const useToast = () => {
   };
 
   const pendingToast = (promise: any, text: PendingToastTextType) => {
+    if (isPendingLoading.current) {
+      const id = String(toastId.current++);
+      toastService.addToast(id, "error", "api 요청 대기 중입니다!");
+      return;
+    }
+
     const id = String(toastId.current++);
     toastService.addToast(id, "pending", text.pending);
+
+    isPendingLoading.current = true;
 
     return promise()
       .then((result: any) => {
@@ -44,6 +53,9 @@ const useToast = () => {
       .catch((error: any) => {
         toastService.updateToast(id, "error", text.error);
         throw error;
+      })
+      .finally(() => {
+        isPendingLoading.current = false;
       });
   };
 

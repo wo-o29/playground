@@ -4,3 +4,7 @@ globalStyle("html, body", {
   margin: 0,
   padding: 0,
 });
+
+globalStyle("a", {
+  textDecoration: "none",
+});

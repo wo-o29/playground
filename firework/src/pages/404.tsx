@@ -24,7 +24,7 @@ export default function NotFound() {
           <Image className={styles.image} src="/images/t.svg" width={320} height={500} alt="" />
           <p className={styles.text}>존재하지 않는 페이지입니다.</p>
           <div className={styles.box}>
-            <Link className={styles.button} href="">
+            <Link className={styles.button} href="/">
               메인으로 돌아가기
             </Link>
           </div>

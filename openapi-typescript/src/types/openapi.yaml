@@ -1,0 +1,1550 @@
+---
+openapi: 3.0.1
+servers:
+  - url: https://api.tickita.net
+security:
+  - bearerAuth: []
+tags:
+  - name: 회원 추가 정보 API
+    description: AccountInfoController
+  - name: 이메일 발송 API
+    description: MailController
+  - name: 대시보드 API
+    description: DashboardController
+  - name: 그룹 생성 API
+    description: CrewController
+  - name: 일정 API
+    description: ScheduleController
+  - name: 일정 조율 API
+    description: VoteController
+  - name: 소셜 로그인 API
+    description: LoginController
+  - name: 알림 API
+    description: NotificationController
+paths:
+  "/schedule/{scheduleId}":
+    get:
+      tags:
+        - 일정 API
+      summary: 일정 상세보기
+      description: 등록된 일정의 상세 정보를 조회합니다.
+      operationId: getScheduleById
+      parameters:
+        - name: scheduleId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/ScheduleResponse"
+    put:
+      tags:
+        - 일정 API
+      summary: 일정 수정
+      description: 등록된 일정을 정보를 수정합니다.
+      operationId: updateSchedule
+      parameters:
+        - name: scheduleId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ScheduleRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/ScheduleResponse"
+    delete:
+      tags:
+        - 일정 API
+      summary: 일정 삭제
+      description: 등록된 일정을 삭제합니다.
+      operationId: deleteSchedule
+      parameters:
+        - name: scheduleId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/MessageResponse"
+  "/notification/{notificationId}":
+    put:
+      tags:
+        - 알림 API
+      summary: 알림 확인 여부 변경
+      description: 알림온 회원의 확인 여부를 변경합니다.
+      operationId: updateIsChecked
+      parameters:
+        - name: notificationId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/IsCheckedRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: string
+    delete:
+      tags:
+        - 알림 API
+      summary: 알림 삭제
+      description: 회원이 확인한 알림을 삭제합니다.
+      operationId: notificationWithdrawal
+      parameters:
+        - name: notificationId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: string
+  "/crew/info/{crewId}":
+    put:
+      tags:
+        - 그룹 생성 API
+      summary: 그룹 정보 수정
+      description: 그룹의 정보를 수정합니다.
+      operationId: updateCrewBasicInfo
+      parameters:
+        - name: crewId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CrewRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/CrewAllInfo"
+  "/crew/delegate-owner/{crewId}":
+    put:
+      tags:
+        - 그룹 생성 API
+      summary: 그룹장 권한 위임
+      description: 그룹장 권한을 멤버에게 위임합니다.
+      operationId: delegateOwner
+      parameters:
+        - name: crewId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: memberId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/CrewMemberInfoResponse"
+  "/account-info/{accountId}":
+    get:
+      tags:
+        - 회원 추가 정보 API
+      summary: 회원 이메일 조회
+      description: 로그인 한 회원의 이메일을 조회합니다.
+      operationId: findAccountEmail
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/AccountResponse"
+    put:
+      tags:
+        - 회원 추가 정보 API
+      summary: 회원 정보 수정
+      description: 로그인 한 회원의 정보를 수정합니다.
+      operationId: updateAccountInfo
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AccountInfoRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/AccountInfoResponse"
+  "/vote":
+    get:
+      tags:
+        - 일정 조율 API
+      summary: 마이페이지 일정 조율 투표 알림 조회
+      description: 마이페이지 일정 조율 정보(투표 현황) 알림을 조회합니다.
+      operationId: findMypageVoteNotification
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/CoordinationNotificationResponse"
+    post:
+      tags:
+        - 일정 조율 API
+      summary: 일정 조율 생성 (투표 생성)
+      description: 그룹의 회원이 일정 조율(투표)을 생성합니다.
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VoteSubjectRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+  "/vote/{voteSubjectId}":
+    post:
+      tags:
+        - 일정 조율 API
+      summary: 일정 조율 투표 (참석자)
+      description: 참석자는 일정 조율 생성된 정보를 투표할 수 있습니다.
+      operationId: setVote
+      parameters:
+        - name: voteSubjectId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VoteStateRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+  "/token/refresh":
+    post:
+      tags:
+        - 소셜 로그인 API
+      summary: kakao 토큰 재발급
+      description: 만료된 토큰을 재발급 합니다.
+      operationId: setRefreshToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/RefreshTokenRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/TokenResponse"
+  "/schedule":
+    post:
+      tags:
+        - 일정 API
+      summary: 일정 등록
+      description: 일정을 등록합니다.
+      operationId: createSchedule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ScheduleRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/ScheduleResponse"
+  "/notification":
+    get:
+      tags:
+        - 알림 API
+      summary: 전체 알림 조회
+      description: 로그인 한 회원의 전체 알림을 조회합니다.
+      operationId: getInvite
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/NotificationResponse"
+    post:
+      tags:
+        - 알림 API
+      summary: 그룹 초대 알림 수락/거절
+      description: 그룹 초대가 온 회원이 수락/거절을 선택합니다.
+      operationId: setInviteAccept
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/NotificationRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/InviteNotificationResponse"
+    delete:
+      tags:
+        - 알림 API
+      summary: 그룹 초대 삭제
+      description: 잘못 초대한 회원을 그룹에서 삭제합니다.
+      operationId: inviteWithdrawal
+      parameters:
+        - name: inviteAcceptWitdrawlRequest
+          in: query
+          required: true
+          schema:
+            "$ref": "#/components/schemas/InviteAcceptWitdrawlRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: string
+  "/mail/send/{crewId}":
+    post:
+      tags:
+        - 이메일 발송 API
+      summary: 이메일 발송
+      description: 회원 가입 되어 있는 회원을 그룹에 초대하면 이메일이 발송됩니다.
+      operationId: setInviteCrew
+      parameters:
+        - name: crewId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SendEmail"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: string
+  "/logout":
+    post:
+      tags:
+        - 소셜 로그인 API
+      summary: 로그아웃
+      description: 로그인 한 회원의 토큰을 삭제합니다.
+      operationId: logout
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/RefreshTokenRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: string
+  "/crew":
+    post:
+      tags:
+        - 그룹 생성 API
+      summary: 그룹 생성
+      description: 로그인 한 회원이 원하는 그룹을 생성합니다.
+      operationId: create_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CrewRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/CrewCreateResponse"
+  "/account-info":
+    post:
+      tags:
+        - 회원 추가 정보 API
+      summary: 회원 추가 정보 입력
+      description: 로그인 한 회원의 추가 정보를 등록합니다.
+      operationId: updateAccountInfo_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AccountInfoRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/TokenResponse"
+    delete:
+      tags:
+        - 회원 추가 정보 API
+      summary: 회원 탈퇴
+      description: 해당 토큰을 가진 회원을 탈퇴합니다.
+      operationId: accountWithdrawal
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: string
+  "/account-info/img":
+    post:
+      tags:
+        - 회원 추가 정보 API
+      summary: 회원 추가 정보 이미지 등록
+      description: 로그인 한 회원의 추가 정보 이미지를 등록합니다.
+      operationId: updateAccountInfo_2
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                multipartFile:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/AccountImgUrlResponse"
+  "/vote/{crewId}/{voteSubjectId}":
+    get:
+      tags:
+        - 일정 조율 API
+      summary: 일정 조율 투표 정보 조회
+      description: 일정 조율 정보(투표 현황) 조회합니다.
+      operationId: findVoteState
+      parameters:
+        - name: crewId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: voteSubjectId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/VoteStateResponse"
+  "/vote/participant":
+    get:
+      tags:
+        - 일정 조율 API
+      summary: 일정 조율 참석자 일정 리스트
+      description: 일정 조율 참석자의 일정 있는 리스트를 조회합니다.
+      operationId: findParticipantTime
+      parameters:
+        - name: participantId
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+        - name: selectedDates
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+              format: date
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/VoteParticipantTimeList"
+  "/schedule/filter/{crewId}":
+    get:
+      tags:
+        - 일정 API
+      summary: 일정 조회
+      description: 선택한 그룹, 기간의 일정 중 사용자가 참석자로 포함된 일정을 조회합니다.
+      operationId: getFilteredSchedules
+      parameters:
+        - name: crewId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: startDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+        - name: endDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ScheduleResponse"
+  "/login/oauth2/code/google":
+    get:
+      tags:
+        - 소셜 로그인 API
+      summary: Google 로그인
+      description: 로그인 한 회원의 정보를 등록합니다.
+      operationId: googleLogin
+      parameters:
+        - name: code
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/TokenResponse"
+  "/login/oauth/kakao":
+    get:
+      tags:
+        - 소셜 로그인 API
+      summary: kakao 로그인
+      description: 로그인 한 회원의 정보를 등록합니다.
+      operationId: kakaoLogin
+      parameters:
+        - name: code
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/TokenResponse"
+  "/dashboard/upcoming-events":
+    get:
+      tags:
+        - 대시보드 API
+      summary: 다가오는 일정 조회
+      description: 사용자가 포함된 다가오는 일정 중 최근 10개의 일정을 조회합니다.
+      operationId: getUpcomingEvents
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/EventInfo"
+  "/crew/{crewId}":
+    get:
+      tags:
+        - 그룹 생성 API
+      summary: 특정 그룹 상세 정보 조회
+      description: 특정 그룹의 상세 정보를 조회합니다.
+      operationId: getCrewDetails
+      parameters:
+        - name: crewId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/CrewDetailResponse"
+    delete:
+      tags:
+        - 그룹 생성 API
+      summary: 그룹 삭제
+      description: 그룹장이 그룹을 삭제합니다.
+      operationId: deleteCrew
+      parameters:
+        - name: crewId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/CrewMessageResponse"
+  "/crew/all-info":
+    get:
+      tags:
+        - 그룹 생성 API
+      summary: 사용자가 속한 그룹 전체 조회
+      description: 사용자가 속한 그룹을 전체 조회합니다.
+      operationId: getCrewAllInfo
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/CrewAllResponse"
+  "/account-info/all":
+    get:
+      tags:
+        - 회원 추가 정보 API
+      summary: 회원 추가 정보 조회
+      description: 로그인 한 회원의 정보를 조회합니다.
+      operationId: findAccountInfo
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/AccountInfoResponse"
+  "/crew/remove-member/{crewId}/{memberId}":
+    delete:
+      tags:
+        - 그룹 생성 API
+      summary: 그룹 내보내기
+      description: 그룹장이 멤버를 탈퇴시킵니다.
+      operationId: removeMember
+      parameters:
+        - name: crewId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: memberId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/CrewMessageResponse"
+  "/crew/leave/{crewId}":
+    delete:
+      tags:
+        - 그룹 생성 API
+      summary: 그룹 나가기
+      description: 사용자가 그룹을 탈퇴합니다.
+      operationId: leaveCrew
+      parameters:
+        - name: crewId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                "$ref": "#/components/schemas/CrewMessageResponse"
+components:
+  schemas:
+    ParticipantInfo:
+      type: object
+      properties:
+        accountId:
+          type: integer
+          format: int64
+        nickName:
+          type: string
+      description: 참석자
+      example:
+        - accountId: 1
+          nickName: User1
+        - accountId: 2
+          nickName: User2
+    ScheduleRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          description: 일정명
+          example: 회의
+        startDateTime:
+          type: string
+          description: 시작일시
+          format: date-time
+        endDateTime:
+          type: string
+          description: 종료일시
+          format: date-time
+        location:
+          type: string
+          description: 위치
+          example: 회의실 A
+        description:
+          type: string
+          description: 설명
+          example: 프로젝트 회의
+        crewId:
+          type: integer
+          description: 그룹ID
+          format: int64
+          example: 1
+        participants:
+          type: array
+          description: 참석자
+          example:
+            - accountId: 1
+              nickName: User1
+            - accountId: 2
+              nickName: User2
+          items:
+            "$ref": "#/components/schemas/ParticipantInfo"
+    CrewInfo:
+      type: object
+      properties:
+        crewId:
+          type: integer
+          format: int64
+        crewName:
+          type: string
+        labelColor:
+          type: string
+      description: 그룹정보
+      example:
+        crewId: 1
+        crewName: 코드잇
+        labelColor: F5C92E
+    ScheduleResponse:
+      type: object
+      properties:
+        scheduleId:
+          type: integer
+          description: 일정ID
+          format: int64
+          example: 1
+        title:
+          type: string
+          description: 일정명
+          example: 회의
+        startDateTime:
+          type: string
+          description: 시작일시
+          format: date-time
+        endDateTime:
+          type: string
+          description: 종료일시
+          format: date-time
+        location:
+          type: string
+          description: 위치
+          example: 회의실 A
+        description:
+          type: string
+          description: 설명
+          example: 프로젝트 회의
+        crewInfo:
+          "$ref": "#/components/schemas/CrewInfo"
+        participants:
+          type: array
+          description: 참석자
+          example:
+            - accountId: 1
+              nickName: User1
+            - accountId: 2
+              nickName: User2
+          items:
+            "$ref": "#/components/schemas/ParticipantInfo"
+        coordinate:
+          type: boolean
+    IsCheckedRequest:
+      type: object
+      properties:
+        isChecked:
+          type: boolean
+          description: 알림 여부 확인
+          example: false
+        alarmType:
+          type: string
+          description: 알림 타입
+          example: CREW, SCHEDULE
+    CrewRequest:
+      type: object
+      properties:
+        crewName:
+          type: string
+          description: 그룹 이름
+          example: 코드잇
+        labelColor:
+          type: string
+          description: 그룹 색상
+          example: F5C92E
+    CrewAllInfo:
+      type: object
+      properties:
+        crewId:
+          type: integer
+          description: 그룹 id
+          format: int64
+          example: 1
+        crewName:
+          type: string
+          description: 그룹 이름
+          example: 코드잇
+        labelColor:
+          type: string
+          description: 그룹 색상
+          example: F5C92E
+    CrewMemberInfoResponse:
+      type: object
+      properties:
+        role:
+          type: string
+          description: 그룹 권한
+          example: OWNER
+        accountId:
+          type: integer
+          description: 회원 id
+          format: int64
+          example: 1
+        nickName:
+          type: string
+          description: 닉네임
+          example: 밍밍
+        email:
+          type: string
+          description: 이메일
+          example: test@test.com
+        image:
+          type: string
+          description: imgUrl
+    AccountInfoRequest:
+      type: object
+      properties:
+        accountId:
+          type: integer
+          description: 회원 id
+          format: int64
+          example: 1
+        nickName:
+          type: string
+          description: 회원 닉네임
+          example: 밍밍
+        phoneNumber:
+          type: string
+          description: 회원 전화번호
+          example: "01012345678"
+        imgUrl:
+          type: string
+          description: imgUrl
+    AccountInfoResponse:
+      type: object
+      properties:
+        accountId:
+          type: integer
+          description: 회원 id
+          format: int64
+          example: 1
+        image:
+          type: string
+          description: imgUrl
+        email:
+          type: string
+          description: 회원 이메일
+          example: test@test.com
+        nickName:
+          type: string
+          description: 회원 닉네임
+          example: 밍밍
+        phoneNumber:
+          type: string
+          description: 회원 전화번호
+          example: "01012345678"
+    LocalTime:
+      type: object
+      properties:
+        hour:
+          type: integer
+          format: int32
+        minute:
+          type: integer
+          format: int32
+        second:
+          type: integer
+          format: int32
+        nano:
+          type: integer
+          format: int32
+      description: 일정 조율 마감 시간
+      example: "17:00:00"
+    VoteDateList:
+      type: object
+      properties:
+        voteDate:
+          type: string
+          description: 일정 조율 날짜
+          format: date
+          example: "2024-06-20"
+        voteStartTime:
+          "$ref": "#/components/schemas/LocalTime"
+        voteEndTime:
+          "$ref": "#/components/schemas/LocalTime"
+    VoteSubjectRequest:
+      type: object
+      properties:
+        crewId:
+          type: integer
+          description: 그룹 id
+          format: int64
+          example: 1
+        title:
+          type: string
+          description: 일정 조율 제목
+          example: 코드잇 회의
+        content:
+          type: string
+          description: 일정 조율 내용
+          example: ㅇㅇ기획 회의
+        place:
+          type: string
+          description: 장소
+          example: 회의실2
+        voteDateLists:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VoteDateList"
+        endDate:
+          type: string
+          description: 일정 조율 마감 날짜
+          format: date
+          example: "2024-06-20"
+        endTime:
+          "$ref": "#/components/schemas/LocalTime"
+        accountIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+    VoteStateRequest:
+      type: object
+      properties:
+        crewId:
+          type: integer
+          description: 그룹 id
+          format: int64
+          example: 1
+        voteStateIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+    RefreshTokenRequest:
+      type: object
+      properties:
+        refresh:
+          type: string
+    TokenResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        grantType:
+          type: string
+        accessToken:
+          type: string
+        accessTokenExpireAt:
+          type: string
+          format: date-time
+        refreshToken:
+          type: string
+        refreshTokenExpireAt:
+          type: string
+          format: date-time
+        isComplete:
+          type: boolean
+        accountEmail:
+          type: string
+        img:
+          type: string
+        nickName:
+          type: string
+        phoneNumber:
+          type: string
+    NotificationRequest:
+      type: object
+      properties:
+        notificationId:
+          type: integer
+          description: 알림 id
+          format: int64
+          example: 1
+        crewId:
+          type: integer
+          description: 그룹 id
+          format: int64
+          example: 1
+        inviteType:
+          type: string
+          description: 그룹 초대 상태값
+          example: ACCEPT,DECLINE,WAIT
+          enum:
+            - ACCEPT
+            - DECLINE
+            - WAIT
+    InviteNotificationResponse:
+      type: object
+      properties:
+        accountId:
+          type: integer
+          description: 회원 Id
+          format: int64
+          example: 1
+        crewId:
+          type: integer
+          description: 그룹 id
+          format: int64
+          example: 1
+        inviteType:
+          type: string
+          description: 그룹 초대 상태값
+          example: ACCEPT,DECLINE,WAIT
+          enum:
+            - ACCEPT
+            - DECLINE
+            - WAIT
+    SendEmail:
+      type: object
+      properties:
+        email:
+          type: string
+    CrewCreateResponse:
+      type: object
+      properties:
+        accountId:
+          type: integer
+          description: 회원 id
+          format: int64
+          example: 1
+        crewName:
+          type: string
+          description: 그룹 id
+          example: "1"
+        labelColor:
+          type: string
+          description: 그룹 색상
+          example: F5C92E
+        crewId:
+          type: integer
+          description: 그룹 id
+          format: int64
+          example: 1
+    AccountImgUrlResponse:
+      type: object
+      properties:
+        imgUrl:
+          type: string
+    CoordinationNotificationResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: isChecked가 false인 개수
+          format: int64
+          example: 1
+        voteNotificationResponseList:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VoteNotificationResponse"
+    VoteNotificationResponse:
+      type: object
+      properties:
+        notificationId:
+          type: integer
+          description: 알림 id
+          format: int64
+          example: 1
+        notificationType:
+          type: string
+          description: 알림 타입
+          example: INVITE, SCHEDULE
+        crewId:
+          type: integer
+          description: 그룹 id
+          format: int64
+          example: 1
+        accountId:
+          type: integer
+          description: 회원 id
+          format: int64
+          example: 1
+        crewName:
+          type: string
+          description: 그룹 이름
+          example: 코드잇
+        localDateTime:
+          type: string
+          description: 알림 온 시간
+          format: date-time
+        isChecked:
+          type: boolean
+          description: 알림 확인 여부
+          example: false
+        voteId:
+          type: integer
+          description: 투표 id
+          format: int64
+          example: 1
+        voteTitle:
+          type: string
+          description: 일정 조율(투표) 제목
+          example: 코드잇 회의
+        endTime:
+          "$ref": "#/components/schemas/LocalTime"
+        endDate:
+          type: string
+          description: 일정 조율(투표) 마감 날짜
+          format: date
+          example: "2024-06-19"
+        voteParticipateType:
+          type: boolean
+          description: 회원 투표 여부
+          example: false
+    VoteDateListResponse:
+      type: object
+      properties:
+        voteStateId:
+          type: integer
+          description: 일정 조율 현황 id
+          format: int64
+          example: 1
+        voteDate:
+          type: string
+          description: 일정 조율 날짜
+          format: date
+          example: "2024-06-20"
+        voteStartTime:
+          "$ref": "#/components/schemas/LocalTime"
+        voteEndTime:
+          "$ref": "#/components/schemas/LocalTime"
+        voteCount:
+          type: integer
+          description: 투표 개수
+          format: int32
+          example: 1
+    VoteListResponse:
+      type: object
+      properties:
+        accountId:
+          type: integer
+          description: 회원id
+          format: int64
+          example: 1
+        nickName:
+          type: string
+          description: 닉네임
+          example: 밍밍
+        voteParticipateType:
+          type: boolean
+          description: 참석자 투표 완료 여부
+          example: false
+    VoteStateResponse:
+      type: object
+      properties:
+        title:
+          type: string
+          description: 일정 조율 제목
+          example: 코드잇 회의
+        content:
+          type: string
+          description: 일정 조율 내용
+          example: ㅇㅇ기획 회의
+        place:
+          type: string
+          description: 장소
+          example: 회의실2
+        crewId:
+          type: integer
+          description: 그룹id
+          format: int64
+          example: 1
+        crewName:
+          type: string
+          description: 그룹 이름
+          example: 코드잇
+        crewLabelColor:
+          type: string
+          description: 그룹 색상
+          example: F5C92E
+        creatorId:
+          type: integer
+          description: 일정 조율 생성자 id
+          format: int64
+          example: 1
+        creatorNickName:
+          type: string
+          description: 일정 조율 생성자 닉네임
+          example: 밍밍
+        voteListResponses:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VoteListResponse"
+        endTime:
+          "$ref": "#/components/schemas/LocalTime"
+        endDate:
+          type: string
+          description: 일정 조율 마감 날짜
+          format: date
+          example: "2024-06-19"
+        voteDateListResponses:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VoteDateListResponse"
+        remainTime:
+          type: integer
+          description: 마감까지 남은 시간
+          format: int64
+    ParticipantTime:
+      type: object
+      properties:
+        haveStartDateTime:
+          type: string
+          description: 회원의 등록된 일정 시작 날짜 및 시간
+          format: date-time
+        haveEndDateTime:
+          type: string
+          description: 회원의 등록된 일정 마감 날짜 및 시간
+          format: date-time
+    VoteParticipantTimeList:
+      type: object
+      properties:
+        participantTimes:
+          uniqueItems: true
+          type: array
+          items:
+            "$ref": "#/components/schemas/ParticipantTime"
+    NotificationInfo:
+      type: object
+      properties:
+        notificationId:
+          type: integer
+          description: 알림 id
+          format: int64
+          example: 1
+        notificationType:
+          type: string
+          description: 알림 메시지 타입
+          example: INVITE, SCHEDULE_INFO, REQUEST, UPDATE, EXCLUDE
+        crewId:
+          type: integer
+          description: 그룹 id
+          format: int64
+          example: 1
+        labelColor:
+          type: string
+          description: 그룹 색상
+          example: F5C92E
+        crewName:
+          type: string
+          description: 그룹 이름
+          example: 코드잇
+        scheduleInfo:
+          "$ref": "#/components/schemas/ScheduleInfo"
+        localDateTime:
+          type: string
+          description: 알림 온 시간
+          format: date-time
+        isChecked:
+          type: boolean
+          description: 알림 확인 여부
+          example: false
+        content:
+          type: string
+          description: content
+          example: content
+        alarmType:
+          type: string
+          description: 알림 타입
+          example: CREW, SCHEDULE
+          enum:
+            - CREW
+            - SCHEDULE
+    NotificationResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: isChecked가 false인 개수
+          format: int64
+          example: 1
+        notificationInfo:
+          type: array
+          items:
+            "$ref": "#/components/schemas/NotificationInfo"
+    ScheduleInfo:
+      type: object
+      properties:
+        scheduleId:
+          type: integer
+          description: 일정 id
+          format: int64
+          example: 1
+        title:
+          type: string
+          description: 일정 제목
+          example: 코드잇 회의
+    EventInfo:
+      type: object
+      properties:
+        scheduleId:
+          type: integer
+          description: 일정ID
+          format: int64
+          example: 1
+        title:
+          type: string
+          description: 일정명
+          example: 회의
+        startDateTime:
+          type: string
+          description: 시작일시
+          format: date-time
+        remainTime:
+          type: string
+          description: 남은시간
+          example: D-1, D-DAY
+        crewInfo:
+          "$ref": "#/components/schemas/CrewAllInfo"
+    CrewDetailResponse:
+      type: object
+      properties:
+        crewName:
+          type: string
+          description: 그룹 이름
+          example: 코드잇
+        labelColor:
+          type: string
+          description: 그룹 색상
+          example: F5C92E
+        crewId:
+          type: integer
+          description: 그룹 id
+          format: int64
+          example: 1
+        crewMembers:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CrewMemberInfoResponse"
+        waitingMembers:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CrewWaitingMemberInfo"
+    CrewWaitingMemberInfo:
+      type: object
+      properties:
+        notificationId:
+          type: integer
+          description: 알림 id
+          format: int64
+          example: 1
+        accountId:
+          type: integer
+          description: 회원 id
+          format: int64
+          example: 1
+        nickName:
+          type: string
+          description: 닉네임
+          example: 홍길동
+        email:
+          type: string
+          description: 이메일
+          example: test@test.com
+    CrewAllResponse:
+      type: object
+      properties:
+        crewAllInfos:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CrewAllInfo"
+    AccountResponse:
+      type: object
+      properties:
+        email:
+          type: string
+          description: 회원 이메일
+          example: test@test.com
+    MessageResponse:
+      type: object
+      properties:
+        scheduleId:
+          type: integer
+          description: 일정ID
+          format: int64
+          example: 1
+        message:
+          type: string
+          description: 메시지
+          example: 일정이 성공적으로 삭제되었습니다.
+    InviteAcceptWitdrawlRequest:
+      type: object
+      properties:
+        crewId:
+          type: integer
+          description: 그룹 id
+          format: int64
+          example: 1
+        accountId:
+          type: integer
+          description: 회원 id
+          format: int64
+          example: 1
+        crewAccept:
+          type: string
+          description: 그룹 초대 상태값
+          example: ACCEPT, DECLINE, WAIT
+          enum:
+            - ACCEPT
+            - DECLINE
+            - WAIT
+    CrewMessageResponse:
+      type: object
+      properties:
+        crewId:
+          type: integer
+          description: 그룹ID
+          format: int64
+          example: 1
+        message:
+          type: string
+          description: 메시지
+          example: 그룹이 성공적으로 삭제되었습니다.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

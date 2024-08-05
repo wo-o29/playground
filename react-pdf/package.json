@@ -11,6 +11,7 @@
   "dependencies": {
     "@react-pdf/renderer": "^3.4.4",
     "next": "14.2.5",
+    "pdf-dist": "^1.0.0",
     "react": "^18",
     "react-dom": "^18"
   },

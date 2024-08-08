@@ -4,7 +4,7 @@ import styles from "@/styles/main.module.css";
 
 export default function Home() {
   const { data: session } = useSession();
-
+  console.log(session);
   return (
     <>
       <div className={styles.wrap}>

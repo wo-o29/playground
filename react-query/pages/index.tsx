@@ -1,81 +1,49 @@
-import ErrorFallback from "@/components/Fallback";
-import Test from "@/components/Test";
-import { useStore } from "@/store/testStore";
-import { QueryClient, dehydrate, useQueries, useQuery, useQueryErrorResetBoundary } from "@tanstack/react-query";
+import React, { startTransition, useDeferredValue } from "react";
 
-import { ErrorBoundary } from "react-error-boundary";
+// 기본 Input 컴포넌트
+const Input = ({ type, ...props }) => <input type={type} {...props} />;
 
-export interface UserInfoType {
-  userId: number;
-  id: number;
-  title: string;
-  completed: boolean;
-}
+// Label 컴포넌트
+const Label = ({ children, ...props }) => <label {...props}>{children}</label>;
 
-const fetchTodo = async (id: number = 1): Promise<UserInfoType> => {
-  try {
-    const res = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`);
-    if (!res.ok) {
-      throw new Error(res.status.toString());
-    }
-    return res.json();
-  } catch (e: any) {
-    console.error(e);
-    throw new Error(e);
+// 에러 메시지 컴포넌트
+const ErrorMessage = ({ message }) => <span style={{ color: "red" }}>{message}</span>;
+
+// 합성 컴포넌트 생성
+const FormField = Object.assign(({ children }) => <div className="form-field">{children}</div>, {
+  Input,
+  Label,
+  ErrorMessage,
+});
+
+// 사용 예시
+const Form = () => (
+  <form>
+    <FormField>
+      <FormField.Label htmlFor="name">이름:</FormField.Label>
+      <FormField.Input type="text" id="name" name="name" />
+      <FormField.ErrorMessage message="이름을 입력해주세요." />
+    </FormField>
+    <FormField>
+      <FormField.Label htmlFor="email">이메일:</FormField.Label>
+      <FormField.Input type="email" id="email" name="email" />
+      <FormField.ErrorMessage message="유효한 이메일 주소를 입력해주세요." />
+    </FormField>
+  </form>
+);
+
+const Home = () => {
+  function handleClick() {
+    startTransition(() => {
+      console.log("comments");
+    });
   }
-};
-
-export const getServerSideProps = async () => {
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery({
-    queryKey: ["todos", "1"],
-    queryFn: () => fetchTodo(1),
-  });
-
-  return {
-    props: { dehydratedState: dehydrate(queryClient) },
-  };
-};
-
-export default function Home() {
-  const ids = [1, 2, 3];
-  const combinedQueries = useQueries({
-    queries: ids.map((id) => ({
-      queryKey: ["post", id],
-      queryFn: () => fetchTodo(id),
-    })),
-    combine: (results) => {
-      return {
-        data: results.map((result) => result.data),
-        pending: results.some((result) => result.isPending),
-      };
-    },
-  });
-  console.log(combinedQueries);
-  const { reset } = useQueryErrorResetBoundary();
 
   return (
-    <>
-      {/* <div>{`유저 ID: ${data?.userId}`}</div>
-      <div>{`ID: ${data?.id}`}</div>
-      <div>{`제목: ${data?.title}`}</div>
-      <div>{`상태: ${data?.completed}`}</div> */}
-      <hr />
-      <hr />
-      {/* <Suspense fallback={<div>로딩중입니다.....</div>}> */}
-      <ErrorBoundary FallbackComponent={ErrorFallback} onReset={reset}>
-        {/* <ErrorBoundary
-        fallbackRender={({ error, resetErrorBoundary }) => (
-          <ErrorFallback
-            error={error}
-            resetErrorBoundary={resetErrorBoundary}
-          />
-        )}
-      > */}
-        {/* <Test /> */}
-      </ErrorBoundary>
-      {/* </Suspense> */}
-    </>
+    <div>
+      <Form />
+    </div>
   );
-}
+};
+
+export default Home;

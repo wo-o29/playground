@@ -42,7 +42,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 > [!NOTE]  
 > Highlights information that users should take into account, even when skimming.
 
-> [!TEST]
+> [!TIP]
 > Optional information to help a user be more successful.
 
 > [!IMPORTANT]  

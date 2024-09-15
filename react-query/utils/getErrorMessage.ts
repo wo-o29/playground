@@ -30,8 +30,7 @@ export const getErrorMessage = (status: number) => {
     case 409:
       return {
         title: "서버 충돌이 발생하였습니다.",
-        content:
-          "요청이 서버 데이터와 충돌이 발생했습니다. 다시 시도해 주세요.",
+        content: "요청이 서버 데이터와 충돌이 발생했습니다. 다시 시도해 주세요.",
       };
     case 429:
       return {
@@ -56,3 +55,30 @@ export const getErrorMessage = (status: number) => {
       };
   }
 };
+
+// 리팩토링 코드
+function createEmailList() {
+  let emailList: string[] = [];
+
+  return {
+    setMailList(array: string[]): void {
+      emailList = array;
+    },
+    getEmailList(): string[] {
+      return emailList;
+    },
+  };
+}
+
+const emailList = createEmailList();
+
+function appendEmail(mailList: string[], email: string): string[] {
+  return [...mailList, email];
+}
+
+function handleFormSubmit(event: FormEvent): void {
+  const form = event.target;
+  const email = form.elements["email"].value;
+  const newEamilList = add_contact(emailList.getEmailList(), email);
+  emailList.setMailList(newEmailList);
+}

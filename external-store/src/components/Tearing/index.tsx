@@ -6,17 +6,19 @@ function getData() {
   return data;
 }
 
-setTimeout(() => (data = 2), 100);
+setTimeout(() => (data = 2), 100); // 100밀리초 후 데이터 변경
 
 function Cell() {
   const start = Date.now();
+
+  // 50밀리초 지연
   while (Date.now() - start < 50) {
-    // force yielding to main thread in concurrent mode
+    // 메인 스레드에게 제어권 양보
   }
 
   const data = getData();
 
-  return <div style={{ padding: "1rem", border: "1px solid red" }}>{data}</div>;
+  return <div style={{ padding: "2rem", border: "1px solid red" }}>{data}</div>;
 }
 
 export default function Tearing() {
@@ -26,11 +28,8 @@ export default function Tearing() {
     startTransition(() => setShowCells(true));
   }, []);
   return (
-    <>
-      <p>
-        Example of tearing. <br />
-        startTransition(동시성 렌더링) 사용 컴포넌트
-      </p>
+    <div>
+      <h3>startTransition(동시성 렌더링) 사용 컴포넌트</h3>
       {showCells ? (
         <div style={{ display: "flex", gap: "1rem" }}>
           <Cell />
@@ -39,8 +38,8 @@ export default function Tearing() {
           <Cell />
         </div>
       ) : (
-        <p>preparing..</p>
+        <p>준비 중..</p>
       )}
-    </>
+    </div>
   );
 }

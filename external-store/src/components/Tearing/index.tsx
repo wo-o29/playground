@@ -10,7 +10,7 @@ setTimeout(() => (data = 2), 100); // 100밀리초 후 데이터 변경
 
 function Cell() {
   const start = Date.now();
-
+  console.log(`티어링: ${start}`);
   // 50밀리초 지연
   while (Date.now() - start < 50) {
     // 메인 스레드에게 제어권 양보

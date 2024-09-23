@@ -15,6 +15,7 @@ export default function Home() {
       <ThemeContext.Provider value={theme}>
         <AComponents />
         <BComponents />
+        <div>현재 테마: {theme}</div>
         <button onClick={toggleTheme}>테마 토글 버튼</button>
       </ThemeContext.Provider>
     </>

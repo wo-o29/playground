@@ -8,8 +8,8 @@ const AComponents = memo(function AComponents() {
 });
 
 const BComponents = memo(function BComponents() {
-  const innerTheme = useContext(innerThemeContext);
-  return <h3 style={{ padding: "10px 0" }}>B 컴포넌트의 테마: {innerTheme}</h3>;
+  const outerTheme = useContext(outerThemeContext);
+  return <h3 style={{ padding: "10px 0" }}>B 컴포넌트의 테마: {outerTheme}</h3>;
 });
 
 const CComponents = memo(function CComponents() {
@@ -27,10 +27,10 @@ export default function Home() {
 
   return (
     <>
+      <AComponents />
       <outerThemeContext.Provider value={outerTheme}>
-        <AComponents />
+        <BComponents />
         <innerThemeContext.Provider value={innerTheme}>
-          <BComponents />
           <CComponents />
         </innerThemeContext.Provider>
         <h3 style={{ padding: "0px 0" }}>Inner Theme: {innerTheme}</h3>

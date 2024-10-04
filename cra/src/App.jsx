@@ -15,7 +15,7 @@ function App() {
             setCount((prev) => prev + 1);
           }}
         >
-          plus
+          plus ++
         </button>
         {createPortal(<Modal />, document.body)}
       </main>
@@ -29,7 +29,7 @@ function Modal() {
     <div>
       <p>title</p>
       <p>{context.count}</p>
-      <button>click</button>
+      <button>click v</button>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import AComponents from "@/components/a";
 
 export const MyContext = React.createContext(0);
-export default function App({ Component, pageProps }: AppProps) {
+export default function BComponents() {
   const [count, setCount] = React.useState(0);
 
   return (
@@ -18,7 +18,6 @@ export default function App({ Component, pageProps }: AppProps) {
         >
           plus
         </button>
-        <Component {...pageProps} />
         {createPortal(<AComponents />, document.body)}
       </main>
     </MyContext.Provider>

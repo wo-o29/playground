@@ -29,7 +29,7 @@ function Modal() {
     <div>
       <p>title</p>
       <p>{context.count}</p>
-      <button>123</button>
+      <button>click</button>
     </div>
   );
 }

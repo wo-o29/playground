@@ -70,7 +70,7 @@ function render(jsx, context) {
       return `<div hidden id="S:${context.id}">${render(
         jsx.props.children,
         context
-      )}</div><script>스크립트 태그는 나중에 Suspense 경계를 다시 렌더링하기 위한 것</script>`;
+      )}</div><script>script 태그는 나중에 Suspense 경계를 다시 렌더링하기 위한 것</script>`;
     } catch (e) {
       // 에러 처리
       if ("then" in e) {

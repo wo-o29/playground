@@ -82,7 +82,10 @@ function render(jsx, context) {
         });
 
         // fallback 렌더링
-        return `<!--$?--><template id="F:${context.id++}"></template>${render(jsx.props.fallback, context)}<!--/$-->`;
+        return `<!--$?--><template id="F:${context.id++}"></template>${render(
+          jsx.props.fallback,
+          context
+        )}<!--/$-->`;
       } else {
         throw new Error("error in rendering:" + e);
       }
@@ -136,15 +139,6 @@ export default function App() {
         <div key={i}>
           <p>chunk {i + 1}</p>
           <code>{chunk}</code>
-          <div></div>
-
-          <div>{false}</div>
-
-          <div>{null}</div>
-
-          <div>{undefined}</div>
-
-          <div>{true}</div>
           <hr />
         </div>
       ))}

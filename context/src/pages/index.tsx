@@ -1,23 +1,35 @@
-import AComponents from "@/components/A";
-import BComponents from "@/components/B";
-import CComponents from "@/components/C";
-import DComponents from "@/components/D";
-import InnerProvider from "@/provider/inner";
-import OuterProvider from "@/provider/outer";
+import { createContext, PropsWithChildren, useContext } from "react";
+
+export const ContextA = createContext<string | null>(null);
+export const ContextB = createContext<string | null>(null);
+
+function ProviderA({ children }: PropsWithChildren) {
+  return <ContextA.Provider value={"A"}>{children}</ContextA.Provider>;
+}
+
+function ProviderB({ children }: PropsWithChildren) {
+  return <ContextB.Provider value={"B"}>{children}</ContextB.Provider>;
+}
+
+function ProviderBB({ children }: PropsWithChildren) {
+  return <ContextB.Provider value={"BB"}>{children}</ContextB.Provider>;
+}
+
+function AComponents() {
+  const value = useContext(ContextB);
+  return <h1>A 컴포넌트</h1>;
+}
 
 export default function Home() {
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-      <OuterProvider>
-        <AComponents />
-        <DComponents />
-        <BComponents />
-        <InnerProvider>
-          <CComponents />
-        </InnerProvider>
-        {/* <h3 style={{ padding: "0px 0" }}>Inner Theme: {innerTheme}</h3>
-        <h3 style={{ padding: "0px 0" }}>Outer Theme: {outerTheme}</h3> */}
-      </OuterProvider>
-    </div>
+    <>
+      <ProviderA>
+        <ProviderB>
+          <ProviderBB>
+            <AComponents />
+          </ProviderBB>
+        </ProviderB>
+      </ProviderA>
+    </>
   );
 }

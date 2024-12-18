@@ -1,29 +1,28 @@
-import React, { startTransition, Suspense, useDeferredValue } from "react";
+import { lazy, Suspense, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
-// 사용 예시
+const LazyComponents = lazy(() => import("../components/LazyComponents"));
 function App() {
+  const [shouldLoad, setShouldLoad] = useState(false);
+
   return (
-    <ErrorBoundary fallback={<div>AComponent 에러 바운러디</div>}>
-      <Suspense fallback={<div>로딩 중...</div>}>
-        <ACompoents />
-      </Suspense>
-    </ErrorBoundary>
+    <>
+      <h1>React lazy</h1>
+      <button
+        onClick={() => setShouldLoad((prev) => !prev)}
+        style={{ marginBottom: "20px" }}
+      >
+        {shouldLoad ? "지우기" : "로드 시작"}
+      </button>
+      {shouldLoad && (
+        <ErrorBoundary fallback={<div>에러 발생!</div>}>
+          <Suspense fallback={<div>로딩 중...</div>}>
+            <LazyComponents />
+          </Suspense>
+        </ErrorBoundary>
+      )}
+    </>
   );
 }
 
-const Home = () => {
-  function handleClick() {
-    startTransition(() => {
-      console.log("comments");
-    });
-  }
-
-  return (
-    <div>
-      <Form />
-    </div>
-  );
-};
-
-export default Home;
+export default App;

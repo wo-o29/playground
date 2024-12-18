@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 
-// Thenable 객체
-const thenable = {
-  then: function (onFulfilled) {
-    setTimeout(() => onFulfilled("Thenable 값입니다!"), 2000);
-  },
-};
+function A() {
+  console.log("A 컴포넌트 렌더링");
+  return null;
+}
 
 function App() {
-  const [value, setValue] = useState(null);
-
-  useEffect(() => {
-    async function fetchValue() {
-      const result = await thenable;
-      setValue(result);
-    }
-    fetchValue();
-  }, []);
+  const [state, setState] = useState(false);
+  const counter = useRef(0);
+  console.log(`현재 state: ${state}`);
+  console.log("App 컴포넌트 렌더링");
 
   return (
     <div>
-      <h2>Thenable 값:</h2>
-      {value ? <p>{value}</p> : <p>로딩 중...</p>}
+      <button
+        onClick={() => {
+          console.log(`-------\n버튼 ${++counter.current}회 클릭\n-------`);
+          setState(true);
+        }}
+      >
+        click me
+      </button>
+      <A />
     </div>
   );
 }

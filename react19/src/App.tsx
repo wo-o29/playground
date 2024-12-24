@@ -1,43 +1,42 @@
-import React, { Fragment, useState, useTransition } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from "react";
 
-function SearchableList() {
-  const [query, setQuery] = useState("");
-  const [list, setList] = useState<any[]>([]);
-  const [isPending, startTransition] = useTransition();
+function App() {
+  const [todoList, setTodoList] = useState<string[]>([]);
+  const [state, setState] = useState(0);
+  const [inputValue, setInputValue] = useState("");
 
-  const handleSearch = (e) => {
-    const searchQuery = e.target.value;
-    setQuery(searchQuery);
-
-    startTransition(async () => {
-      const searchResults = await generateSearchResults(searchQuery);
-      setList(searchResults);
-    });
+  const handleAddTodo = (e: any) => {
+    e.preventDefault();
+    console.log(inputValue);
+    setTodoList((prev) => [...prev, inputValue]);
+    setInputValue("");
   };
 
   return (
-    <Fragment key={1}>
-      <input
-        type="text"
-        value={query}
-        onChange={handleSearch}
-        placeholder="검색어를 입력하세요"
-      />
-      {isPending && <p>검색 중...</p>}
+    <>
+      <div>{state}</div>
+      <button type="button" onClick={() => setState((prev) => prev++)}>
+        클릭
+      </button>
+      <h1>TODO APP</h1>
+      <form>
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e: any) => setInputValue(e.target.value)}
+        />
+        <button type="submit" onClick={handleAddTodo}>
+          추가
+        </button>
+      </form>
       <ul>
-        {list.map((item, index) => (
-          <li key={index}>{item}</li>
+        {todoList.map((todo, index) => (
+          <li key={index}>{todo}</li>
         ))}
       </ul>
-    </Fragment>
+    </>
   );
 }
 
-async function generateSearchResults(query: string): Promise<string[]> {
-  // 실제로는 API 호출이나 복잡한 연산 실행
-  await new Promise((resolve) => setTimeout(() => resolve(""), 5000));
-  const dummyData = ["사과", "바나나", "체리", "대추", "엘더베리"];
-  return dummyData.filter((item) => item.includes(query));
-}
-
-export default SearchableList;
+export default App;

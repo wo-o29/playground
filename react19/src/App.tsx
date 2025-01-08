@@ -1,40 +1,33 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 
-function App() {
-  const [todoList, setTodoList] = useState<string[]>([]);
+function Component({ id }: { id: string }) {
   const [state, setState] = useState(0);
-  const [inputValue, setInputValue] = useState("");
+  console.log(`${id}: ${state}`);
 
-  const handleAddTodo = (e: any) => {
-    e.preventDefault();
-    console.log(inputValue);
-    setTodoList((prev) => [...prev, inputValue]);
-    setInputValue("");
-  };
+  return (
+    <div>
+      {state}
+      <button type="button" onClick={() => setState((prev) => (prev += 1))}>
+        {`${id} -  버튼`}
+      </button>
+    </div>
+  );
+}
+
+function App() {
+  const [isShow, setIsShow] = useState(true);
+  if (isShow) {
+    const [state, setState] = useState(0);
+  }
 
   return (
     <>
-      <div>{state}</div>
-      <button type="button" onClick={() => setState((prev) => prev++)}>
+      <Component id="1" />
+      <Component id="2" />
+      <Component id="3" />
+      <button type="button" onClick={() => setIsShow((prev) => !prev)}>
         클릭
       </button>
-      <h1>TODO APP</h1>
-      <form>
-        <input
-          type="text"
-          value={inputValue}
-          onChange={(e: any) => setInputValue(e.target.value)}
-        />
-        <button type="submit" onClick={handleAddTodo}>
-          추가
-        </button>
-      </form>
-      <ul>
-        {todoList.map((todo, index) => (
-          <li key={index}>{todo}</li>
-        ))}
-      </ul>
     </>
   );
 }

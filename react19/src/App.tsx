@@ -7,7 +7,7 @@ function Component({ id }: { id: string }) {
     <div>
       {state}
       <button type="button" onClick={() => setState((prev) => (prev += 1))}>
-        {`${id} -  버튼`}
+        {id} - 버튼
       </button>
     </div>
   );

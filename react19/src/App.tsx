@@ -14,7 +14,7 @@ function Component({ id }: { id: string }) {
 }
 
 function App() {
-  const [isShow, setIsShow] = useState(false);
+  const [isShow, setIsShow] = useState(true);
 
   return (
     <>
